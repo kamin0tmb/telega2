@@ -4,6 +4,8 @@ using System;
 using System.Text;
 using Telegram.Bot;
 using telega2.Controllers;
+using telega2.Services;
+using telega2.Configuration;
 
 
 namespace telega
@@ -26,15 +28,30 @@ namespace telega
 
         static void ConfigureServices(IServiceCollection services)
         {
+            AppSettings appSettings = BuildAppSettings();
+            services.AddSingleton<IStorage, MemoryStorage>();
+            services.AddSingleton<IFileHandler, AudioFileHandler>();
             // Подключаем контроллеры сообщений и кнопок
             services.AddTransient<DefaultMessageController>();
             services.AddTransient<VoiceMessageController>();
             services.AddTransient<TextMessageController>();
             services.AddTransient<InlineKeyboardController>();
             // Регистрируем объект TelegramBotClient c токеном подключения
-            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("5384319470:AAEu74oy_RJP7WS-5LgnJrPG93RISS-EV2U"));
+            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(appSettings.BotToken));
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
+            
         }
+        static AppSettings BuildAppSettings()
+        {
+            return new AppSettings()
+            {
+                DownloadsFolder = "C:\\Users\\kamin0\\Downloads",
+                BotToken = "5384319470:AAEu74oy_RJP7WS-5LgnJrPG93RISS-EV2U",
+                AudioFileName = "audio",
+                InputAudioFormat = "ogg",
+            };
+        }
+
     }
 }
