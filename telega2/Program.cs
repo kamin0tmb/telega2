@@ -46,7 +46,7 @@ namespace telega
         {
             return new AppSettings()
             {
-                DownloadsFolder = "C:\\Users\\kamin0\\Downloads",
+                DownloadsFolder = "D:\\4",
                 BotToken = "5384319470:AAEu74oy_RJP7WS-5LgnJrPG93RISS-EV2U",
                 AudioFileName = "audio",
                 InputAudioFormat = "ogg",
